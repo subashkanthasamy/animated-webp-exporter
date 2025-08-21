@@ -22,9 +22,12 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm install -g expo-cli
+          npm install -g serve
 
       - name: Build website
-        run: npx expo export --platform web
+        run: |
+          npx expo export --platform web
+          cp dist/index.html dist/404.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
