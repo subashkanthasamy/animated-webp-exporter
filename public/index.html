@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated WEBP Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .drop-zone {
+            border: 2px dashed #4a5568;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.dragover {
+            border-color: #4299e1;
+            background-color: #ebf8ff;
+        }
+        #preview {
+            display: grid;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f7fafc;
+            border-radius: 0.5rem;
+            min-height: 70px;
+        }
+        #animatedPreview {
+            width: 200px;
+            height: 200px;
+            background-color: #f7fafc;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        #animatedPreview img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Animated WEBP Converter</h1>
+        
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+            <div id="dropZone" class="drop-zone rounded-lg p-8 text-center cursor-pointer mb-6">
+                <p class="text-gray-600">Drag and drop your image sequence here or click to select files</p>
+                <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
+            </div>
+
+            <div id="preview" class="hidden mb-6">
+                <!-- Preview thumbnails will be added here -->
+            </div>
+
+            <div class="flex flex-wrap gap-6">
+                <div class="flex-1 min-w-[300px]">
+                    <div class="flex flex-col space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <label class="text-gray-700">Frame Duration (ms):</label>
+                            <input type="number" id="frameDuration" value="30" min="20" max="1000" class="border rounded px-3 py-2 w-24">
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <label class="text-gray-700">Quality:</label>
+                            <input type="range" id="quality" min="0" max="100" value="80" class="w-32">
+                            <span id="qualityValue" class="text-gray-700">80%</span>
+                        </div>
+
+                        <button id="convertBtn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Convert to Animated WEBP
+                        </button>
+                    </div>
+
+                    <div id="progress" class="mt-4 hidden">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p id="progressText" class="text-center mt-2 text-gray-600">Processing...</p>
+                    </div>
+
+                    <div id="download" class="mt-4 hidden">
+                        <a id="downloadLink" class="block text-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+                            Download Animated WEBP
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center space-y-4">
+                    <div id="animatedPreview" class="hidden">
+                        <!-- Animated preview will be shown here -->
+                    </div>
+                    <button id="previewBtn" class="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Preview Animation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add required libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/webp-converter@2.3.3/dist/webp-converter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webp-converter@2.3.3/dist/webp-converter.worker.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
