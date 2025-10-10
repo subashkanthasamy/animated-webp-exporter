@@ -46,7 +46,6 @@ const ConvertButton: React.FC<ConvertButtonProps> = ({
         console.log(`Converting image ${i + 1}/${images.length}`)
 
         const canvas = await loadImageAsCanvas(images[i])
-        const ctx = canvas.getContext('2d')!
 
         // Convert canvas to WebP blob
         await new Promise<void>((resolve) => {
@@ -74,7 +73,7 @@ const ConvertButton: React.FC<ConvertButtonProps> = ({
       setIsConverting(false)
     } catch (error) {
       console.error('Error converting to WebP:', error)
-      alert(`Error: ${error.message}`)
+      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`)
       setIsConverting(false)
     }
   }
