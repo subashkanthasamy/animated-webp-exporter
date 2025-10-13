@@ -96,13 +96,20 @@ const ConvertButton: React.FC<ConvertButtonProps> = ({
       // Initialize FFmpeg
       const ffmpeg = new FFmpeg()
 
-      // Load FFmpeg core
+      // Load FFmpeg core with error handling
       console.log('Loading FFmpeg...')
-      const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
-      await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
-      })
+      try {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        await ffmpeg.load({
+          coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+          wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
+        })
+      } catch (loadError) {
+        console.error('Failed to load FFmpeg:', loadError)
+        alert('FFmpeg failed to load. This may be due to browser compatibility or network issues. Please try the Animated GIF option instead.')
+        setIsConverting(false)
+        return
+      }
 
       // Convert images to WebP format and write to FFmpeg filesystem
       for (let i = 0; i < images.length; i++) {
