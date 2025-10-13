@@ -7,20 +7,7 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ images, setImages }) => {
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    const files = Array.from(e.dataTransfer.files)
-    handleFiles(files)
-  }, [])
-
-  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files)
-      handleFiles(files)
-    }
-  }, [])
-
-  const handleFiles = (files: File[]) => {
+  const handleFiles = useCallback((files: File[]) => {
     const imageFiles = files.filter(file => file.type.startsWith('image/'))
 
     const newImages: ImageFile[] = imageFiles.map(file => ({
@@ -30,7 +17,20 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ images, setImages }) => {
     }))
 
     setImages(prev => [...prev, ...newImages])
-  }
+  }, [setImages])
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    const files = Array.from(e.dataTransfer.files)
+    handleFiles(files)
+  }, [handleFiles])
+
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files)
+      handleFiles(files)
+    }
+  }, [handleFiles])
 
   const removeImage = (id: string) => {
     setImages(prev => {
